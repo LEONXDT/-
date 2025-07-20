@@ -24,6 +24,8 @@ let particles = [];
 let currentMsgIndex = 0;
 const delayBetweenTexts = 2000;
 let musicStarted = false;
+let showFinalText = false;
+let finalText = "";
 
 const audio = document.getElementById("bg-music");
 
@@ -115,14 +117,8 @@ function createHeartShapeWithText(text) {
     };
   });
 
-  // نص واضح يظهر داخل القلب
-  setTimeout(() => {
-    ctx.fillStyle = "deeppink";
-    ctx.font = "bold 42px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(text, centerX, centerY);
-  }, 2000);
+  showFinalText = true;
+  finalText = text;
 }
 
 function animate() {
@@ -141,6 +137,14 @@ function animate() {
       ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
       ctx.fill();
     }
+  }
+
+  if (showFinalText) {
+    ctx.fillStyle = "deeppink";
+    ctx.font = "bold 42px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(finalText, centerX, centerY);
   }
 
   requestAnimationFrame(animate);
