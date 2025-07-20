@@ -50,7 +50,7 @@ function generateTargets(text) {
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
 
- tempCtx.font = text === "My Beautiful Princess" ? "bold 40px Arial" : "bold 120px Arial";
+ tempCtx.font = text === "My Beautiful Princess" ? "bold 40px Arial" : "bold 100px Arial";
   tempCtx.fillStyle = "white";
   tempCtx.textAlign = "center";
   tempCtx.textBaseline = "middle";
