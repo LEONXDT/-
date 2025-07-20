@@ -100,7 +100,6 @@ function createHeartShapeWithText(text) {
     }
   }
 
-  // شكل القلب من النقاط
   particles = heartPoints.map((p, i) => {
     const prev = particles[i] || {
       x: Math.random() * canvas.width,
@@ -116,14 +115,14 @@ function createHeartShapeWithText(text) {
     };
   });
 
-  // عرض النص بشكل طبيعي داخل القلب
+  // نص واضح يظهر داخل القلب
   setTimeout(() => {
     ctx.fillStyle = "deeppink";
-    ctx.font = "bold 42px Arial"; // تقدر تصغره أكثر لو تحب
+    ctx.font = "bold 42px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(text, centerX, centerY);
-  }, 2000); // يظهر النص بعد تشكيل القلب
+  }, 2000);
 }
 
 function animate() {
