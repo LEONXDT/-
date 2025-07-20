@@ -3,6 +3,9 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+const audio = document.getElementById("bg-music");
+let musicStarted = false;
+
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 const fontSize = 14;
@@ -20,6 +23,7 @@ const messages = [
 ];
 
 let particles = [];
+let textParticles = [];
 let currentMsgIndex = 0;
 const delayBetweenTexts = 3000;
 
@@ -66,8 +70,8 @@ function generateTargets(text) {
 }
 
 function createParticlesFromTargets(targets) {
-  particles = targets.map((t, i) => {
-    const prev = particles[i] || {
+  textParticles = targets.map((t, i) => {
+    const prev = textParticles[i] || {
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height
     };
@@ -76,7 +80,8 @@ function createParticlesFromTargets(targets) {
       y: prev.y,
       targetX: t.x,
       targetY: t.y,
-      color: "hotpink"
+      color: "hotpink",
+      text: null
     };
   });
 }
@@ -98,8 +103,8 @@ function createHeartShapeWithText(text) {
   const textTargets = generateTargets(text);
   const final = heartPoints.concat(textTargets.map(p => ({ x: p.x, y: p.y })));
 
-  particles = final.map((p, i) => {
-    const prev = particles[i] || {
+  textParticles = final.map((p, i) => {
+    const prev = textParticles[i] || {
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height
     };
@@ -108,7 +113,8 @@ function createHeartShapeWithText(text) {
       y: prev.y,
       targetX: p.x,
       targetY: p.y,
-      color: "hotpink"
+      color: "hotpink",
+      text: null
     };
   });
 }
@@ -116,14 +122,19 @@ function createHeartShapeWithText(text) {
 function animate() {
   drawMatrixBackground();
 
-  for (let p of particles) {
+  for (let p of [...textParticles, ...particles]) {
     p.x += (p.targetX - p.x) * 0.08;
     p.y += (p.targetY - p.y) * 0.08;
 
     ctx.fillStyle = p.color;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
-    ctx.fill();
+    if (p.text) {
+      ctx.font = "20px Arial";
+      ctx.fillText(p.text, p.x, p.y);
+    } else {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
   requestAnimationFrame(animate);
@@ -148,20 +159,26 @@ function spawnILoveYou(x, y) {
     const radius = Math.random() * 100;
     const tx = x + Math.cos(angle) * radius;
     const ty = y + Math.sin(angle) * radius;
-    particles.push({
+    const particle = {
       x: x,
       y: y,
       targetX: tx,
       targetY: ty,
-      color: "deeppink"
-    });
+      color: "deeppink",
+      text: "I love you"
+    };
+    particles.push(particle);
     setTimeout(() => {
-      particles = particles.filter(p => p.targetX !== tx || p.targetY !== ty);
+      particles = particles.filter(p => p !== particle);
     }, 4000);
   }
 }
 
 canvas.addEventListener("click", (e) => {
+  if (!musicStarted) {
+    audio.play();
+    musicStarted = true;
+  }
   spawnILoveYou(e.clientX, e.clientY);
 });
 
