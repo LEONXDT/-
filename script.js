@@ -9,22 +9,39 @@ const fontSize = 14;
 const columns = Math.floor(canvas.width / fontSize);
 const drops = new Array(columns).fill(1);
 
-const messages = ["Happy Birthday", "alaa", "27.8.1999", "26+"];
+const messages = [
+  "Happy Birthday",
+  "alaa",
+  "27.8.1999",
+  "26+",
+];
+
 let particles = [];
+let textParticles = [];
 let currentMsgIndex = 0;
 const delayBetweenTexts = 3000;
-let touchTexts = [];
+
+// ✅ تشغيل الموسيقى عند أول لمسة
+document.body.addEventListener("click", () => {
+  const music = document.getElementById("bg-music");
+  if (music.paused) {
+    music.play().catch(e => console.log("مشكلة تشغيل الصوت:", e));
+  }
+}, { once: true });
 
 function drawMatrixBackground() {
   ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   ctx.fillStyle = "#b76eff";
   ctx.font = fontSize + "px monospace";
 
   for (let i = 0; i < drops.length; i++) {
     const letter = "HAPPY BIRTHDAY"[Math.floor(Math.random() * 14)];
     ctx.fillText(letter, i * fontSize, drops[i] * fontSize);
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
     drops[i]++;
   }
 }
@@ -35,6 +52,7 @@ function generateTargets(text) {
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
 
+  tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
   tempCtx.font = "bold 80px Arial";
   tempCtx.fillStyle = "white";
   tempCtx.textAlign = "center";
@@ -46,7 +64,9 @@ function generateTargets(text) {
   for (let y = 0; y < canvas.height; y += 4) {
     for (let x = 0; x < canvas.width; x += 4) {
       const i = (y * canvas.width + x) * 4;
-      if (imgData[i + 3] > 150) points.push({ x, y });
+      if (imgData[i + 3] > 150) {
+        points.push({ x, y });
+      }
     }
   }
   return points;
@@ -113,17 +133,15 @@ function animate() {
     ctx.fill();
   }
 
-  for (let i = 0; i < touchTexts.length; i++) {
-    const t = touchTexts[i];
-    ctx.font = "bold 20px Arial";
-    ctx.fillStyle = "hotpink";
-    ctx.fillText("I love you", t.x, t.y);
-    t.y -= 0.3;
-    if (Date.now() - t.start > 4000) {
-      touchTexts.splice(i, 1);
-      i--;
-    }
+  // رسم "I love you" عند اللمس
+  for (let p of textParticles) {
+    ctx.font = "18px Arial";
+    ctx.fillStyle = "pink";
+    ctx.fillText("I love you", p.x, p.y);
+    p.life -= 1;
+    p.y -= 0.5;
   }
+  textParticles = textParticles.filter(p => p.life > 0);
 
   requestAnimationFrame(animate);
 }
@@ -141,16 +159,17 @@ function showNextMessage() {
   }
 }
 
-canvas.addEventListener("click", () => {
-  for (let i = 0; i < 10; i++) {
-    touchTexts.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      start: Date.now()
-    });
-  }
-});
-
 animate();
 showNextMessage();
 setInterval(drawMatrixBackground, 33);
+
+// 🔹 عند اللمس، أظهر 10 "I love you" بشكل عشوائي
+canvas.addEventListener("click", () => {
+  for (let i = 0; i < 10; i++) {
+    textParticles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      life: 240
+    });
+  }
+});
