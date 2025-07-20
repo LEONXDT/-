@@ -136,7 +136,7 @@ function animate() {
   // رسم "I love you" عند اللمس
   for (let p of textParticles) {
     ctx.font = "18px Arial";
-    ctx.fillStyle = "pink";
+    ctx.fillStyle = "hotpink";
     ctx.fillText("I love you", p.x, p.y);
     p.life -= 1;
     p.y -= 0.5;
