@@ -13,20 +13,18 @@ const messages = ["Happy Birthday", "alaa", "27.8.1999", "26+"];
 let particles = [];
 let currentMsgIndex = 0;
 const delayBetweenTexts = 3000;
-let iLoveYouParticles = [];
+let touchTexts = [];
 
 function drawMatrixBackground() {
   ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
   ctx.fillStyle = "#b76eff";
   ctx.font = fontSize + "px monospace";
+
   for (let i = 0; i < drops.length; i++) {
     const letter = "HAPPY BIRTHDAY"[Math.floor(Math.random() * 14)];
     ctx.fillText(letter, i * fontSize, drops[i] * fontSize);
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
     drops[i]++;
   }
 }
@@ -36,6 +34,7 @@ function generateTargets(text) {
   const tempCtx = tempCanvas.getContext("2d");
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
+
   tempCtx.font = "bold 80px Arial";
   tempCtx.fillStyle = "white";
   tempCtx.textAlign = "center";
@@ -47,9 +46,7 @@ function generateTargets(text) {
   for (let y = 0; y < canvas.height; y += 4) {
     for (let x = 0; x < canvas.width; x += 4) {
       const i = (y * canvas.width + x) * 4;
-      if (imgData[i + 3] > 150) {
-        points.push({ x, y });
-      }
+      if (imgData[i + 3] > 150) points.push({ x, y });
     }
   }
   return points;
@@ -109,19 +106,24 @@ function animate() {
   for (let p of particles) {
     p.x += (p.targetX - p.x) * 0.08;
     p.y += (p.targetY - p.y) * 0.08;
+
     ctx.fillStyle = p.color;
     ctx.beginPath();
     ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
     ctx.fill();
   }
 
-  // رسم كلمات "I Love You"
-  iLoveYouParticles.forEach(p => {
-    p.y -= 0.3;
-    ctx.font = "bold 26px Arial";
+  for (let i = 0; i < touchTexts.length; i++) {
+    const t = touchTexts[i];
+    ctx.font = "bold 20px Arial";
     ctx.fillStyle = "hotpink";
-    ctx.fillText("I Love You", p.x, p.y);
-  });
+    ctx.fillText("I love you", t.x, t.y);
+    t.y -= 0.3;
+    if (Date.now() - t.start > 4000) {
+      touchTexts.splice(i, 1);
+      i--;
+    }
+  }
 
   requestAnimationFrame(animate);
 }
@@ -140,17 +142,13 @@ function showNextMessage() {
 }
 
 canvas.addEventListener("click", () => {
-  for (let i = 0; i < 5; i++) {
-    iLoveYouParticles.push({
-      x: centerX - 100 + Math.random() * 200,
-      y: centerY + Math.random() * 100
+  for (let i = 0; i < 10; i++) {
+    touchTexts.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      start: Date.now()
     });
   }
-
-  // حذفهم بعد 4 ثواني
-  setTimeout(() => {
-    iLoveYouParticles = [];
-  }, 4000);
 });
 
 animate();
