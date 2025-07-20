@@ -10,9 +10,9 @@ const columns = Math.floor(canvas.width / fontSize);
 const drops = new Array(columns).fill(1);
 
 const messages = [
-  "1",
-  "2",
   "3",
+  "2",
+  "1",
   "Happy",
   "Birthday",
   "To",
