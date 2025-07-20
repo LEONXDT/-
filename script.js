@@ -17,14 +17,12 @@ const messages = [
   "Birthday",
   "To",
   "You",
-  "alaa",
-  "27-8-1999",
-  "Happy26"
+  "alaa"
 ];
 
 let particles = [];
 let currentMsgIndex = 0;
-const delayBetweenTexts = 3000;
+const delayBetweenTexts = 2000;
 let musicStarted = false;
 
 const audio = document.getElementById("bg-music");
@@ -52,7 +50,7 @@ function generateTargets(text) {
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
 
-  tempCtx.font = "bold 110px Arial";
+  tempCtx.font = "bold 120px Arial";
   tempCtx.fillStyle = "white";
   tempCtx.textAlign = "center";
   tempCtx.textBaseline = "middle";
@@ -151,7 +149,7 @@ function showNextMessage() {
   } else {
     setTimeout(() => {
       createHeartShapeWithText("My Beautiful Princess");
-    }, delayBetweenTexts);
+    }, 500);
   }
 }
 
