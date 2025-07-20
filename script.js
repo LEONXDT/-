@@ -12,22 +12,16 @@ const drops = new Array(columns).fill(1);
 const messages = [
   "Happy Birthday",
   "alaa",
-  "27.8.1999",
-  "26+",
+  "1999.27.8",
+  "Happy26",
+  "My Beautiful Moon",
+  "My Little Princess❤",
+  "My Only Love"
 ];
 
 let particles = [];
-let textParticles = [];
 let currentMsgIndex = 0;
 const delayBetweenTexts = 3000;
-
-// ✅ تشغيل الموسيقى عند أول لمسة
-document.body.addEventListener("click", () => {
-  const music = document.getElementById("bg-music");
-  if (music.paused) {
-    music.play().catch(e => console.log("مشكلة تشغيل الصوت:", e));
-  }
-}, { once: true });
 
 function drawMatrixBackground() {
   ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
@@ -52,7 +46,6 @@ function generateTargets(text) {
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
 
-  tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
   tempCtx.font = "bold 80px Arial";
   tempCtx.fillStyle = "white";
   tempCtx.textAlign = "center";
@@ -133,16 +126,6 @@ function animate() {
     ctx.fill();
   }
 
-  // رسم "I love you" عند اللمس
-  for (let p of textParticles) {
-    ctx.font = "18px Arial";
-    ctx.fillStyle = "hotpink";
-    ctx.fillText("I love you", p.x, p.y);
-    p.life -= 1;
-    p.y -= 0.5;
-  }
-  textParticles = textParticles.filter(p => p.life > 0);
-
   requestAnimationFrame(animate);
 }
 
@@ -154,22 +137,34 @@ function showNextMessage() {
     setTimeout(showNextMessage, delayBetweenTexts);
   } else {
     setTimeout(() => {
-      createHeartShapeWithText("My Beautiful Princess");
+      createHeartShapeWithText("My Beautiful Princess❤");
     }, delayBetweenTexts);
   }
 }
 
+function spawnILoveYou(x, y) {
+  for (let i = 0; i < 10; i++) {
+    const angle = Math.random() * 2 * Math.PI;
+    const radius = Math.random() * 100;
+    const tx = x + Math.cos(angle) * radius;
+    const ty = y + Math.sin(angle) * radius;
+    particles.push({
+      x: x,
+      y: y,
+      targetX: tx,
+      targetY: ty,
+      color: "deeppink"
+    });
+    setTimeout(() => {
+      particles = particles.filter(p => p.targetX !== tx || p.targetY !== ty);
+    }, 4000);
+  }
+}
+
+canvas.addEventListener("click", (e) => {
+  spawnILoveYou(e.clientX, e.clientY);
+});
+
 animate();
 showNextMessage();
 setInterval(drawMatrixBackground, 33);
-
-// 🔹 عند اللمس، أظهر 10 "I love you" بشكل عشوائي
-canvas.addEventListener("click", () => {
-  for (let i = 0; i < 10; i++) {
-    textParticles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      life: 240
-    });
-  }
-});
