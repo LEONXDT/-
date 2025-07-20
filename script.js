@@ -50,7 +50,7 @@ function generateTargets(text) {
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
 
- tempCtx.font = text === "My Beautiful Princess" ? "bold 40px Arial" : "bold 100px Arial";
+  tempCtx.font = "bold 120px Arial";
   tempCtx.fillStyle = "white";
   tempCtx.textAlign = "center";
   tempCtx.textBaseline = "middle";
@@ -100,10 +100,8 @@ function createHeartShapeWithText(text) {
     }
   }
 
-  const textTargets = generateTargets(text);
-  const final = heartPoints.concat(textTargets.map(p => ({ x: p.x, y: p.y })));
-
-  particles = final.map((p, i) => {
+  // شكل القلب من النقاط
+  particles = heartPoints.map((p, i) => {
     const prev = particles[i] || {
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height
@@ -117,6 +115,15 @@ function createHeartShapeWithText(text) {
       text: null
     };
   });
+
+  // عرض النص بشكل طبيعي داخل القلب
+  setTimeout(() => {
+    ctx.fillStyle = "deeppink";
+    ctx.font = "bold 42px Arial"; // تقدر تصغره أكثر لو تحب
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, centerX, centerY);
+  }, 2000); // يظهر النص بعد تشكيل القلب
 }
 
 function animate() {
