@@ -10,11 +10,16 @@ const columns = Math.floor(canvas.width / fontSize);
 const drops = new Array(columns).fill(1);
 
 const messages = [
-  "Happy Birthday",
+  "1",
+  "2",
+  "3",
+  "Happy",
+  "Birthday",
+  "To",
+  "You",
   "alaa",
   "27-8-1999",
-  "Happy26",
-  ""
+  "Happy26"
 ];
 
 let particles = [];
@@ -145,7 +150,7 @@ function showNextMessage() {
     setTimeout(showNextMessage, delayBetweenTexts);
   } else {
     setTimeout(() => {
-      createHeartShapeWithText("My Beautiful Princess❤");
+      createHeartShapeWithText("My Beautiful Princess");
     }, delayBetweenTexts);
   }
 }
