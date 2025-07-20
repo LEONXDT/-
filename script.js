@@ -52,7 +52,7 @@ function generateTargets(text) {
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
 
-  tempCtx.font = "bold 80px Arial";
+  tempCtx.font = "bold 110px Arial";
   tempCtx.fillStyle = "white";
   tempCtx.textAlign = "center";
   tempCtx.textBaseline = "middle";
