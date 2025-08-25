@@ -132,8 +132,8 @@ function animate() {
   drawMatrixBackground();
 
   for (let p of particles) {
-    p.x += (p.targetX - p.x) * 0.05;
-    p.y += (p.targetY - p.y) * 0.05;
+    p.x += (p.targetX - p.x) * 0.07;
+    p.y += (p.targetY - p.y) * 0.07;
 
     ctx.fillStyle = p.color;
     if (p.text) {
