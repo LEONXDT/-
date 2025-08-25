@@ -141,7 +141,7 @@ function animate() {
 
   if (showFinalText) {
     ctx.fillStyle = "deeppink";
-    ctx.font = "bold 42px Arial";
+    ctx.font = "bold 30px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(finalText, centerX, centerY);
