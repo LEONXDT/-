@@ -90,7 +90,7 @@ function createParticlesFromTargets(targets) {
 
 function createHeartShapeWithText(text) {
   const heartPoints = [];
-  const scale = 20;
+  const scale = 15;
   for (let t = 0; t < Math.PI * 2; t += 0.05) {
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
