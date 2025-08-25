@@ -89,7 +89,7 @@ function createParticlesFromTargets(targets) {
       y: prev.y,
       targetX: t.x,
       targetY: t.y,
-      color: "hotpink",
+      color: "deeppink",
       text: null
     };
   });
