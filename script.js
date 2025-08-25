@@ -13,10 +13,11 @@ const messages = [
   "3",
   "2",
   "1",
-  "you",
-  "will ",
-  "always",
-  "be"
+  "HAPPY",
+  "BIRTHDAY",
+  "TO",
+  "YOU",
+  "ALAA"
 ];
 
 let particles = [];
