@@ -5,7 +5,14 @@ canvas.height = window.innerHeight;
 
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
-const fontSize = 14;
+
+// ✅ مقاسات ديناميكية تعتمد على حجم الشاشة
+const baseSize = Math.min(window.innerWidth, window.innerHeight);
+const fontSize = Math.floor(baseSize / 80);         // حجم حروف الخلفية
+const dynamicFontSize = Math.floor(baseSize / 8);   // النصوص الكبيرة (مثل BIRTHDAY)
+const finalTextSize = Math.floor(baseSize / 15);    // النص الأخير فوق القلب
+const heartScale = Math.floor(baseSize / 40);       // حجم القلب
+
 const columns = Math.floor(canvas.width / fontSize);
 const drops = new Array(columns).fill(1);
 
@@ -52,7 +59,7 @@ function generateTargets(text) {
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
 
-  tempCtx.font = "bold 70px Arial";
+  tempCtx.font = `bold ${dynamicFontSize}px Arial`;
   tempCtx.fillStyle = "white";
   tempCtx.textAlign = "center";
   tempCtx.textBaseline = "middle";
@@ -90,7 +97,7 @@ function createParticlesFromTargets(targets) {
 
 function createHeartShapeWithText(text) {
   const heartPoints = [];
-  const scale = 9;
+  const scale = heartScale; // ✅ هنا حجم القلب صار ديناميكي
   for (let t = 0; t < Math.PI * 2; t += 0.05) {
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
@@ -141,7 +148,7 @@ function animate() {
 
   if (showFinalText) {
     ctx.fillStyle = "deeppink";
-    ctx.font = "bold 15px Arial";
+    ctx.font = `bold ${finalTextSize}px Arial`; // ✅ ديناميكي
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(finalText, centerX, centerY);
