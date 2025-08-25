@@ -6,12 +6,13 @@ canvas.height = window.innerHeight;
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 
-// ✅ مقاسات ديناميكية تعتمد على حجم الشاشة
+// ✅ مقاسات ديناميكية حسب الشاشة
 const baseSize = Math.min(window.innerWidth, window.innerHeight);
-const fontSize = Math.floor(baseSize / 80);         // حجم حروف الخلفية
+const fontSize = Math.floor(baseSize / 80);         // حجم حروف الماتريكس
 const dynamicFontSize = Math.floor(baseSize / 8);   // النصوص الكبيرة (مثل BIRTHDAY)
 const finalTextSize = Math.floor(baseSize / 15);    // النص الأخير فوق القلب
 const heartScale = Math.floor(baseSize / 40);       // حجم القلب
+const pointGap = Math.max(2, Math.floor(baseSize / 200)); // المسافة بين نقاط الكلمة
 
 const columns = Math.floor(canvas.width / fontSize);
 const drops = new Array(columns).fill(1);
@@ -67,8 +68,8 @@ function generateTargets(text) {
 
   const imgData = tempCtx.getImageData(0, 0, canvas.width, canvas.height).data;
   let points = [];
-  for (let y = 0; y < canvas.height; y += 4) {
-    for (let x = 0; x < canvas.width; x += 4) {
+  for (let y = 0; y < canvas.height; y += pointGap) {
+    for (let x = 0; x < canvas.width; x += pointGap) {
       const i = (y * canvas.width + x) * 4;
       if (imgData[i + 3] > 150) {
         points.push({ x, y });
@@ -97,7 +98,7 @@ function createParticlesFromTargets(targets) {
 
 function createHeartShapeWithText(text) {
   const heartPoints = [];
-  const scale = heartScale; // ✅ هنا حجم القلب صار ديناميكي
+  const scale = heartScale;
   for (let t = 0; t < Math.PI * 2; t += 0.05) {
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
@@ -148,7 +149,7 @@ function animate() {
 
   if (showFinalText) {
     ctx.fillStyle = "deeppink";
-    ctx.font = `bold ${finalTextSize}px Arial`; // ✅ ديناميكي
+    ctx.font = `bold ${finalTextSize}px Arial`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(finalText, centerX, centerY);
