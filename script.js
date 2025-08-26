@@ -98,7 +98,7 @@ function createParticlesFromTargets(targets) {
 function createHeartShapeWithText(text) {
   const heartPoints = [];
   const scale = heartScale; // ✅ هنا حجم القلب صار ديناميكي
-  for (let t = 0; t < Math.PI * 2; t += 0.05) {
+  for (let t = 0; t < Math.PI * 2; t += 0.07) {
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
     for (let i = 0; i < 2; i++) {
@@ -165,7 +165,7 @@ function showNextMessage() {
     setTimeout(showNextMessage, delayBetweenTexts);
   } else {
     setTimeout(() => {
-      createHeartShapeWithText("My Beautiful Princess");
+      createHeartShapeWithText("My princess");
     }, 500);
   }
 }
